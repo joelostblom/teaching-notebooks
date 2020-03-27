@@ -1,0 +1,147 @@
+---
+jupyter:
+  jupytext:
+    formats: ipynb,Rmd
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.3.4
+  kernelspec:
+    display_name: Python 3
+    language: python
+    name: python3
+---
+
+```{python}
+# I am just ignoring warnings becuase seaborn hasn't been updated in a while
+# Never do this unless you know what warnings you are ignoring
+import warnings
+warnings.filterwarnings('ignore') 
+```
+
+# A few EDA pointers
+
+Some pointers on useful pandas and seaborn functions to conduct EDA on a new dataset. This is of course not the only way of doing EDA, so help yourself to what you find useful and leave the rest.
+
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+
+
+# Personal preference, this is about the maximum amount of customization I think is needed for EDA
+sns.set(context='notebook', style='ticks', font_scale=1.2, rc={'axes.spines.right':False, 'axes.spines.top':False})
+
+titanic = pd.read_csv('train.csv', )
+titanic.columns = titanic.columns.str.lower() # less shift clicking
+```
+
+`head()` is the most useful place to start to get a feel of what the data looks like.
+
+```{python}
+titanic.head()
+```
+
+`info()` is good for viewing data shape, missing values, and column data types.
+
+```{python}
+titanic.info()
+```
+
+`nunique()` displays the number of unique values for each column, which is useful to understand the structure of the data and for faceting and hueing later on.
+
+```{python}
+titanic.nunique()
+```
+
+`describe()` gives and idea of distribution shapes (although I usually think it's easier to see this in plots, but a quick peak can't hurt).
+
+```{python}
+titanic.describe()
+```
+
+The fastest way to view all univariate distributions is via the `hist()` method of pandas data frames.
+
+```{python}
+titanic.hist(figsize=(10,6), grid=False, bins=20)
+plt.tight_layout()
+```
+
+Although some of these numerical variables are actually categorical, I would leave them in as numbers initially, just to eyeball if there are any obvious relationships to follow up on later.
+
+`sns.pairplot()` shows the pair-wise variable relationships in addition to the single variable distributions. I tend to favor doing this directly instead of `hist()`, but both have their use cases. The pairplot grid can take quite some time to create for big data sets, so it can be a good idea to use `sample()` to only plot a subset of the data (but be sure to run it a few times to sample different subsets).
+
+```{python}
+sns.pairplot(titanic)
+```
+
+The `hue` parameter makes it straightforward to split by variables (variable choice can be guided by `nunique()` and/or the plot above).
+
+```{python}
+sns.pairplot(titanic, hue='survived')
+```
+
+It is good to keep in mind that the diagonal KDE-plots can be a bit misleading for discrete data (especially the categorical columns here). I might do a few more of these hue splits depending on how the data looks, potentially with fewer columns to create smaller plots.
+
+Around this point I would encode the variables with what I believe is their correct data type to facilitate exploring them further.
+
+```{python}
+cols_to_cat = ['survived', 'pclass', 'sibsp', 'parch', 'embarked', 'sex']
+titanic[cols_to_cat] = titanic[cols_to_cat].astype('category')
+titanic = titanic.set_index('passengerid') # or drop this column
+# `pd.cut()` can be used to change a numeric dtype into categorical bins
+```
+
+Now the pairplot is focused on the relationship between continuous variables.
+
+```{python}
+numeric_cols = titanic.select_dtypes('number').columns
+sns.pairplot(titanic, hue='survived', vars=numeric_cols, plot_kws={'s':6, 'edgecolor':'none'})
+```
+
+Since the scatters are still saturated, I would probably want to investigate these two variables with separate 2D histograms or similar instead of different colors in the scatter plot.
+
+*What I have done up until this point are what I tend to do most of the time. The below is more situational for me, so there might be better ways of going about it (such as rectangular area plots), but this approach is quick without any additional imports.*
+
+To quickly gauge relationships between categorical and continuous variables, I would loop over the columns and subset the data. You could do some of this in a Facetgrid, but the melting steps are not easier than the loops in my opinion, and Facetgrids are really meant to display multiple subsets of the data by distributing variable values across columns and rows in the plot grid but keeping the x and y axes the same throughout. 
+
+```{python}
+cat_cols = titanic.select_dtypes('category').columns.to_list()
+num_cols = len(cat_cols)
+for numeric_col in numeric_cols.to_list():
+    fig, axes = plt.subplots(1, num_cols, figsize=(num_cols * 3, 3), constrained_layout=True)
+    for col, ax in zip(cat_cols, axes.flatten()):
+        # I would prefer a swarmplot if there were less data points
+        sns.violinplot(x=numeric_col, y=col, data=titanic, ax=ax, cut=0, scale='width')
+        # I might add some sort of dotplot here, e.g. sns.stripplot or the fliers only from a boxplot
+```
+
+`sns.countplot()` can be used to show counts of categorical variables as barplots without the need for manually plotting `value_counts()`.
+
+```{python}
+fig, axes = plt.subplots(1, num_cols, figsize=(num_cols * 3, 3), constrained_layout=True)
+for col, ax in zip(cat_cols, axes.flatten()):
+    sns.countplot(x=col, data=titanic, ax=ax)#color='steelblue')
+```
+
+To understand relationships between the categorical variables, I would loop over the categorical columns and subset the data to count occurrences in the subsets. Again, you could do some of this in a Facetgrid, but it is a bit buggy for categorical counting since it is not its intended function.
+
+```{python}
+for hue_col in cat_cols:
+    cat_cols_to_plot = [col for col in cat_cols if col != hue_col]
+    num_cols = len(cat_cols_to_plot)
+    fig, axes = plt.subplots(1, num_cols, figsize=(num_cols * 3, 3), constrained_layout=True)
+    for col, ax in zip(cat_cols_to_plot, axes.flatten()):
+        sns.countplot(x=col, data=titanic, ax=ax, hue=hue_col)
+        # The below is optional
+        if not ax == axes.flatten()[0]:
+            ax.legend_.remove()
+            ax.set_ylabel('')
+```
+
+The above could be made into one big subplot grid also, but it would involve a bit more verbose and EDA is ideally done without too much thinking about graphics layouts.
+
+
+After this initial broad EDA, I would start more targeted EDA by using `sns.relplot` to explore relationships between two continuous variables and `sns.catplot` to explore relationships between a continuous and a categorical variable. Both of these plotting functions allow the use of small multiples (facets) to break the data into categorical subsets. The [seaborn tutorials](https://seaborn.pydata.org/tutorial.html) is a good place to learn more about this 
+ I also created [this tutorial](https://nbviewer.jupyter.org/github/UofTCoders/2018-09-10-utoronto/blob/gh-pages/code/3-data-wrangling-and-viz.ipynb#Exploring-relationships-between-two-quantitative-variables) as part of UofTCoders.
