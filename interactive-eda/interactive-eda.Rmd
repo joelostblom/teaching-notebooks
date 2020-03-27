@@ -1,0 +1,840 @@
+---
+jupyter:
+  jupytext:
+    formats: ipynb,Rmd
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.3.4
+  kernelspec:
+    display_name: Python [conda env:plotly-dev]
+    language: python
+    name: conda-env-plotly-dev-py
+---
+
+## Lesson preamble
+
+### Lesson objectives
+
+- To give students an overview of the capabilities of Python and how to use the
+  JupyterLab for exploratory data analyses.
+- Learn about some differences between Python and Excel.
+- Learn some basic Python commands.
+- Learn about the Markdown syntax and how to use it within the Jupyter Notebook.
+
+### Lesson outline
+
+- Communicating with computers (5 min)
+    - Advantages of text-based communication (10 min)
+    - Speaking Python (5 min)
+    - Natural and formal languages (10 min)
+- The Jupyter Notebook (20 min)
+- Data analysis in Python (5 min)
+    - Packages (5 min)
+    - How to get help (5 min)
+    - Exploring data with `pandas` (10 min)
+    - Visualizing data with `seaborn` (10 min)
+
+
+The aim of this workshop is to teach you basic concepts, skills, and tools for working with data so that you can get more done in less time, and while having more fun. We will show you how to use the programming language Python to replace many of the tasks you would normally do in spreadsheet software such as Excel, and also do more advanced analysis. This first section will be a brief introduction to communicating with your computer via text rather than by pointing and clicking in a graphical user interface, which might be what you are used to.
+
+## Communicating with computers
+
+Before we get into practically doing things, I want to give some background to the idea of computing. Essentially, computing is about humans communicating with the computer to modulate flows of current in the hardware, in order to get the computer to carry out advanced calculations that we are unable to efficiently compute ourselves. Early examples of human-computer communication was quite primitive and included actually disconnecting a wire and connecting it again in a different spot. Luckily, we are not doing this anymore, instead we have graphical user interfaces with menus and buttons, which is what you are commonly using on your laptop. These graphical interfaces can be thought of as a layer or shell around the internal components of your operating system and they exist as a middle man making it easier for us to express our thoughts, and for computers to interpret them.
+
+An example of such a program that I think many of you are familiar with is spreadsheet software such as Microsoft Excel and LibreOffice Calc. Here, all the functionality of the program is accessible via hierarchical menus, and clicking buttons sends instructions to the computer, which then responds and sends the results back to your screen.
+
+Spreadsheet software is great for viewing and entering small data sets and creating simple visualizations fast. However, it can be tricky to design publication-ready figures, create automatic reproducible analysis workflows, perform advanced calculations, and reliably clean data sets. Even when using a spreadsheet program to record data, it is often beneficial to have some some basic programming skills to facilitate the analyses of those data.
+
+
+### Advantages of text-based communication
+
+Today, we will learn about communicating to your computer via text, rather than graphical point and click. Typing instruction to the computer might at first seems counterintuitive, why do we need it when it is so easy to point and click with the mouse?  Well, graphical user interfaces can be nice when you are new to something, but text based interfaces are more powerful, faster and actually also easier to use once you get comfortable with them.
+
+We can compare it to learning a language, in the beginning it's nice to look things up in a dictionary (or a menu in a graphical program), and slowly string together sentences one word at a time. But once we become more proficient in the language and know what we want to say, it is easier to say or type it directly, instead of having to look up every word in the dictionary first. By extension, it would be even faster to speak or just think of what you want to do and have it executed by the computer, this is what speech- and brain-computer interfaces are concerned with.
+
+Text interfaces are also less resource intensive than their graphical counterparts and easier to develop programs for since you don't have to code the graphical components. Very important, is that it is easy to automate and repeat any task once you have all the instructions written down. This facilitates reproducibility of analysis, not only between studies from different labs, but also between researchers in the same lab: compare being shown how to perform a certain analysis in spreadsheet software, where the instruction will essentially be "first you click here, then here, then here...", with being handed the same workflow written down in several lines of codes which you can analyze and understand at your own pace. 
+
+Since text is the easiest way for people who are fluent in computer languages to interact with computer, many powerful programs are written without a graphical user interface (which makes it faster to create these programs) and to use these programs you often need to know how to use a text interface. For example, many the best data analysis and machine learning packages are written in Python or R, and you need to know these languages to use them. Even if the program or package you want to use is not written in Python, much of the knowledge you gain from understanding one programming language can be transferred to others. In addition, most powerful computers that you can log into remotely might only give you a text interface to work with and there is no way to launch a graphical user interface.
+
+
+### Speaking Python
+
+To communicate with the computer via Python, we first need to open the Python interpreter. This will *interpret* our typed commands into machine language so that the computer can understand it. On Windows open the `Anaconda Prompt`, on MacOS open `terminal.app`, and on Linux open whichever terminal you prefer (e.g. `gnome-terminal` or `konsole`). Then type in `python` and hit <kbd>Enter</kbd>. You should see something like this:
+
+```
+Python 3.6.5 | packaged by conda-forge | (default, Apr  6 2018, 13:39:56)
+[GCC 4.8.2 20140120 (Red Hat 4.8.2-15)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+```
+
+There should be a blinking cursor after the `>>>`, which is *prompting* you to enter a command (for this reason, the interpreter can also be referred to as a "prompt"). Now let's speak Python!
+
+### Natural and formal languages
+
+While English and other spoken language are referred to as "natural" languages, computer languages are said to be "formal" languages. You might think it is quite tricky to learn formal languages, but it is actually not! You already know one: mathematics, which in fact written largely the same way in Python as you would write it by hand. 
+
+```{python}
+4 + 5
+```
+
+The Python interpreter returns the result directly under our input and prompts us to enter new instructions. This is another strength of using Python for data analysis, some programming languages requires an additional step where the typed instructions are *compiled* into machine language and saved as a separate file that they computer can run. Although compiling code often results in faster execution time, Python allows us to very quickly experiment and test new code, which is where most of the time is spent when doing exploratory data analysis.
+
+The sparseness in the input `4 + 5` is much more efficient than typing "Hello computer, could you please add 4 and 5 for me?". Formal computer languages also avoid the ambiguity present in natural languages such as English. You can think of Python as a combination of math and a formal, succinct version of English. Since it is designed to reduce ambiguity, Python lacks the edge cases and special rules that can make English so difficult to learn, and there is almost always a logical reason for how the Python language is designed, not only a historical one.
+
+The syntax for assigning a value to a variable is also similar to how this is written in math.
+
+```{python}
+a = 4
+```
+
+```{python}
+a * 2
+```
+
+In my experience, learning programming really is similar to learning a foreign language - you will often learn the most from just trying to do something and receiving feedback (from the computer or another person)! When there is something you can't wrap you head around, or if you are actively trying to find a new way of expressing a thought, then look it up, just as you would with a natural language.
+
+
+## The Jupyter Notebook
+
+Although the Python interpreter is very powerful, it is commonly bundled with other useful tools in interfaces specifically designed for exploratory data analysis. One such interface is the Jupyter Notebook, which is what we will be using today. Open it by running `juptyerlab` from the terminal, or by finding it in the `Anaconda navigator` from your operating system menu. This should output some text in the terminal and open new tab in your default browser.
+
+Jupyter originates from a project called IPython, an effort to make Python development more interactive. Since its inception, the scope of the project expanded to include additional programming languages, such as Julia, Python, and R, so the name was changed to "Jupyter" as a reference to these core languages. Today, Jupyter supports many more languages, but we will be using it only for Python code. Specifically, we will be using the notebook from Jupyter, which allows us to easily take notes about our analysis and view plots within the same document where we code. This facilitates sharing and reproducibility of analyses, and the notebook interface is easily accessible through any web browser as well as exportable as a PDF or HTML page.
+
+In the new browser tab, click the plus sign to the left and select to create a new notebook in the Python language (also `File --> New --> Notebook`). A new notebook has no name other than "Untitled". If you click on "Untitled" you will be given the option of changing the name to whatever you want. The notebook is divided into cells. Initially there will be a single input cell. You can type Python code directly into the cell, just as we did before. To run the output, press <kbd>Shift</kbd> + <kbd>Enter</kbd> or click the play button in the toolbar.
+
+```{python}
+4 + 5
+```
+
+By default, the code in the current cell is interpreted and the next existing cell is selected or a new empty one is created (you can press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to stay on the current cell). You can split the code across several lines as needed. 
+
+```{python}
+a = 4
+a * 2
+```
+
+<!-- #region -->
+The little counter on the left of each cell keeps track of in which order the cells were executed, and changing to an `*` when the computer is processing the computation (only noticeable for computation that takes longer time). If the `*` is shown for a really long time, the Python kernel might have frozen and needs to be restarted, which can be done via the circular arrow button in the toolbar. Cells can be reordered by click and drag with the mouse, and copy and paste is available via right mouse click. The shortcut keys in the right click menu are referring to the Jupyter Command mode, which is not that important to know about when just starting out, but can be interesting to look into if you like keyboard shortcuts.
+
+The notebook is saved automatically, but it can also be done manually from the toolbar or by hitting <kbd>Ctrl</kbd> + <kbd>s</kbd>. Both the input and the output cells are saved so any plots that you make will be present in the notebook next time you open it up without the need to rerun any code. This allows you to create complete documents with both your code and the output of the code in a single place instead of spread across text files for your codes and separate image files for each of your graphs.
+
+You can also change the cell type from Python code to Markdown using the Cell | Cell Type option. Markdown is a simple formatting system which allows you to create documentation for your code, again all within the same notebook structure. You might already be familiar with markdown if you have typed comments in online forums or use use a chat app like slack or whatsapp. A short example of the syntax:
+
+```markdown
+# Heading level one
+
+- A bullet point
+- *Emphasis in italics*
+- **Strong emphasis in bold**
+
+This is a [link to learn more about markdown](https://guides.github.com/features/mastering-markdown/)
+```
+
+
+The Notebook itself is stored as a JSON file with an .ipynb extension. These are specially formatted text files, which can be exported and imported into another Jupyter system. This allows you to share your code, results, and documentation with others. You can also export the notebook to HTML, PDF, and many other formats to make sharing even easier! This is done via `File --> Export Notebook As...` (The first time trying to export to PDF, there might
+ be an error message with instructions on how to install TeX. Follow those instructions and the n try exporting again. If it is still not working, click `Help --> Launch Classic Notebook` and try exporting the same way as before)
+
+
+The data analysis environment provided by the Jupyter Notebook is very powerful and facilitates reproducible analysis. It is possible to write an entire paper in this environment, and it is very handy for reports, such as progress updates since you can share your comments on the analysis together with the analysis itself.
+
+It is also possible to open up other document types in the JupyterLab interface, e.g. text documents and terminals. These can be placed side by side with the notebook through drag and drop, and all running programs can be viewed in the "Running" tab to the left. To search among all available commands for the notebook, the "Commands" tab can be used. Existing documents can be opened from the "Files" tab.
+
+Although the notebook is running in a web browser, there is no need to have an active Internet connection to use it. After downloading and installing JupyterLab (e.g. via Anaconda), all the files necessary to run JupyterLab are stored locally and the browser is simply used to view these files.
+<!-- #endregion -->
+
+<!-- #region -->
+## Data analysis in Python
+
+To access additional functionality in a spreadsheet program, you need to click the menu and select the tool you want to use. All charts are in one menu, text layout tools in another, data analyses tools in a third, and so on. Programming languages such as Python have so many tools and functions so that they would not fit in a menu. Instead of clicking `File -> Open` and chose the file, you would type something similar to `file.open('<filename>')` in a programming language. Don't worry if you forget the exact expression, it is often enough to just type the few first letters and then hit <kbd>Tab</kbd>, to show the available options, more on that later.
+
+
+### Packages
+
+Since there are so many functions available in Python, it is unnecessary to include all of them with the default installation of the programming language (it would be as if your new phone came with every single app preinstalled). Instead, more advanced functionality is grouped into separate packages, which can be accessed by typing `import <package_name>` in Python. The Anaconda Python distribution essentially bundles the core Python language with many of the most effective Python packages for data analysis, but other packages need to be downloaded before they can be used, just like downloading an addon to a browser or mobile phone.
+
+Just like in spreadsheet software menus, there are lots of different tools within each Python package. For example, if I want to use numerical Python functions, I can import the **num**erical **py**thon module, `numpy`. I can then access any function by writing `numpy.<function_name>`.
+<!-- #endregion -->
+
+```{python}
+import numpy
+
+numpy.mean([1, 2, 3, 4, 5])
+```
+
+### How to get help
+
+Once you start out using Python, you don't know what functions are availble within each package. Luckily, in the Jupyter Notebook, you can type `numpy.`<kbd>Tab</kbd> (that is numpy + period + tab-key) and a small menu will pop up that shows you all the available functions in that module. This is analogous to clicking a 'numpy-menu' and then going through the list of functions. As I mentioned earlier, there are plenty of available functions and it can be helpful to filter the menu by typing the initial letters of the function name.
+
+To get more info on the function you want to use, you can type out the full name and then press <kbd>Shift + Tab</kbd> once to bring up a help dialogue and again to expand that dialogue. We can see that to use this function, we need to supply it with the argument `a`, which should be 'array-like'. An array is essentially just a sequence of numbers. We just saw that one way of doing this was to enclose numbers in brackets `[]`, which in Python means that these numbers are in a list, something you will hear more about later. Instead of manually activating the menu every time, the JupyterLab  offers a tool called the "Inspector" which displays help information automatically. I find this very useful and always have it open next to my Notebook. More help is available via the "Help" menu, which links to useful online resources (for example `Help --> Numpy Reference`).
+
+When you start getting familiar with typing function names, you will notice that this is often faster than looking for functions in menus. However, sometimes you forget and it is useful to get hints via the help system described above.
+
+It is common to give packages nicknames, so that it is faster to type. This is not necessary, but can save some work in long files and make code less verbose so that it is easier to read:
+
+```{python}
+import numpy as np
+
+np.mean([1, 2, 3, 4, 5])
+```
+
+### Exploring data with the `pandas` package 
+
+The Python package that is most commonly used to perform exploratory data analysis with spreadsheet-like data is called `pandas`. The name is derived from "panel data", an econometrics term for multidimensional structured data sets. Data are easily loaded into `pandas` from `.csv` or other spreadsheet formats. The format `pandas` uses to represent this data is called a data frame.
+
+For this section of the tutorial, the goal is to understand the concepts of data analysis in Python and how they are different from analyzing data frame,in graphical programs. There fore, it is recommend to not code along, but rather try to get a feel for the overall workflow. All these steps will be covered in detail during later sections in the tutorial.
+
+I do not have any good data set lying around, so I will load a public dataset from the web (you can view the data by pasting the url into your browser). This sample data set describes the length and width of sepals and petals for three species of iris flowers. When you open a file in a graphical spreadsheet program, it will immediately display the content in the window. Likewise, Python will display the information of the data set when you read it in. 
+
+```{python}
+import pandas as pd
+
+pd.read_csv('https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv')
+```
+
+However, to do useful and interesting things to data, we need to assign this value to a variable name so that it is easy to access later. Let's save our data into an object called `iris`
+
+```{python}
+iris = pd.read_csv('https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv')
+```
+
+```{python}
+iris
+```
+
+```{python}
+iris.info()
+```
+
+And a single column can be selected by using the square brackes
+and supplying the column name as a string.
+
+```{python}
+iris['sepal_length']
+```
+
+```{python}
+iris['sp_len'] = iris['sepal_length'] + iris['petal_length']
+iris
+```
+
+We could calculate the mean of all columns with the `mean` method.
+
+```{python}
+iris.mean()
+```
+
+And even divide it into groups depending on which species or iris flower the observations belong to.
+
+```{python}
+iris.groupby('species').mean()
+```
+
+This technique is often referred to as "split-apply-combine".
+The `groupby()` method *split* the observations into groups,
+`mean()` *applied* an operation to each group,
+and the results were automatically *combined* into the table that we can see here.
+We will learn much more about this in a later lecture.
+
+
+The more general `.agg` allows us to apply multiple aggregation functions at ones.
+
+```{python}
+iris.groupby('species').agg(['mean', 'std'])
+```
+
+```{python}
+iris.describe()
+```
+
+# Visualizing data with `plotly express`
+
+A crucial part of any exploratory data analysis is data visualization.
+Humans have great pattern recognition systems,
+which makes it much easier for us to understand data
+when it is represented by graphical elements in plots rather than numbers in tables.
+
+To visualize our data we will use Python package dedicated to interactive visualization:
+`plotly` and its high level module `ploty express`.
+With just a few keystrokes,
+we can create a scatter plot comparing the sepal shape measurements.
+
+```{python}
+import plotly.express as px
+
+
+px.scatter(iris, 'sepal_width', 'sepal_length')
+```
+
+By default, this plot is interactive.
+We can see more information by hovering over the data points,
+zoom by dragging with the mouse,
+and double click to reset the zoom.
+The toolbar in the upper right corner has a few more options,
+including saving a screenshot of the plot
+(we will see how to save publication-ready figures later).
+
+Before we move on,
+let's change a few default options to imrpove the aesthetics of the plots.
+
+```{python}
+iris = px.data.iris()
+```
+
+```{python}
+# I used the 'simple_white' template to generate this notebook,
+# but it is not publically available until the next version of plotly (in a few weeks)
+px.defaults.template = 'simple_white'
+px.defaults.width = 600
+px.defaults.height = 500
+```
+
+```{python}
+px.scatter(iris, 'sepal_width', 'sepal_length')
+```
+
+Let's explore this dataset.
+There is some clearly visible separation in the scatter plot,
+can that be explained by the different species of flowers?
+Let's add the species name to the hover information.
+
+So far, we have been typing column names as strings (e.g. 'sepal_width') directly after each other.
+We can do this to save some typing,
+as long as we provide them in the order that they are specifed in the function signature
+(in the help message from `Shift+Tab`).
+If we want to provide another parameter that is not immediately following the previous,
+we need to include the parameter name, as below with `hover_name`.
+
+```{python}
+px.scatter(iris, 'sepal_width', 'sepal_length', hover_name='species')
+```
+
+That was helpful,
+but does not give a good overview of the species.
+Let's plot each species in separate colors.
+
+```{python}
+px.scatter(iris, 'sepal_width', 'sepal_length', 'species', hover_name='species')
+```
+
+Even the legend is interactive,
+a single click deselects a species,
+and a double click select only that species.
+
+We just "mapped" a dimension/variable of the data ('species') to an graphical component in the plot.
+This is a key part of explorative data analysis,
+and plotly provides a "grammar of graphics" that allows us to do this effectively, 
+without much code.
+Later,
+we will continue with this key concept
+and see how additional data dimensions/variables can be mapped to graphical components such as subplots, sizes, and frames.
+
+First, let's see how we can add marginal plots to visualize the distributions of each species.
+
+```{python}
+# Note that this code is split across multiple lines to improve readability.
+# Any time you are within a pair of parentheses, you can split the code into a new line
+px.scatter(iris, 'sepal_width', 'sepal_length', 'species',
+           hover_name='species', marginal_x='histogram')
+```
+
+We could also add a trendline,
+but it is important to not add these blindly, 
+but instead think of what you want to show with these.
+The available options in plotly are "ols" for ordinary least squares regression,
+and "lowess" for locally weighted regression.
+For "ols", the equation and R-squared values can be seen by hovering over the line.
+Trendlines require the `statsmodels` package to be installed.
+
+```{python}
+px.scatter(iris, 'sepal_width', 'sepal_length', 'species',
+           hover_name='species', marginal_x='histogram', trendline='lowess')
+```
+
+# Visualizing two numerical variables
+
+
+Let's continue exploring the relationship between two numerical variables,
+now with a more complex dataset.
+The "gapminder" dataset was collected to showcase
+information about the state of the world.
+Plotly has part of this dataset built-in as a sample dataset,
+which we can use to illustrate this section of the tutorial.
+
+```{python}
+gm = px.data.gapminder()
+```
+
+```{python}
+gm
+```
+
+```{python}
+gm.info()
+```
+
+It would be interesting to see if some of these numerical columns are correlated with each other.
+For example, the GDP / capita and lifeExp might show a correlations,
+since national wealth can contribute to better health among the population.
+To get an overview of possible correlations,
+we can use the pandas `corr` method.
+
+```{python}
+gm.corr()
+```
+
+The correlations on the diagonal are a perfect `1`,
+since they represent each column correlating with itself.
+The lower and upper half around the diagonal are mirros images or the same values
+so we can focus on just one of them.
+To aid our visual system,
+we can style the table to have a background gradient.
+
+```{python}
+gm.corr().style.background_gradient()
+```
+
+Now it is clear that the strongest correlation is indeed between GDP / capita and life expectancy.
+By default,
+the `corr` function calculates the linear Pearson correlation betwen columns,
+but we can change this.
+A glance at the help message tells us that there is a method argument in the `corr` function.
+Changing this to `'spearman'` will give us the spearman correlation instead.
+
+```{python}
+gm.corr('spearman').style.background_gradient()
+```
+
+The spearman correlation is notably higher than the Pearson correlation.
+Since spearman is a computed based on the values rank
+rather than their absolute values,
+this indicates that there could be a non-linear correlation between these two variables.
+
+Let's explore with a scatter plot!
+
+```{python}
+px.scatter(gm, 'gdpPercap', 'lifeExp')
+```
+
+There indeed seems to be a non-linear relationship between the variables.
+It appears to be logarithmic,
+increased wealth greatly increased life expectancy up until a point where its effect tapers off.
+To stratify the data,
+we could change the x-axis to display logged values.
+
+```{python}
+px.scatter(gm, 'gdpPercap', 'lifeExp', log_x=True)
+```
+
+As previously, we could add country name to the hover info.
+
+```{python}
+px.scatter(gm, 'gdpPercap', 'lifeExp', hover_name='country', log_x=True)
+```
+
+Strangely,
+there seems to be multiple dots for the same country.
+Looking back at the dataframe,
+we can see that there is data from more than one year,
+let's add this to the hover info as well.
+
+```{python}
+px.scatter(gm, 'gdpPercap', 'lifeExp',
+           hover_name='country', hover_data=['year'],
+           log_x=True) 
+```
+
+So far,
+we have mapped the `'country'` and `'year'` variables to graphical components (the hover pop up).
+Let's add `'population'` and `'continent'`.
+
+```{python}
+px.scatter(gm, 'gdpPercap', 'lifeExp', color='continent', size='pop',
+           hover_name='country', hover_data=['year'],
+           log_x=True) 
+```
+
+There are some tiny dots that are hard to see,
+increasing the max size of dots can remedy that.
+
+```{python}
+px.scatter(gm, 'gdpPercap', 'lifeExp', color='continent', size='pop',
+           hover_name='country', hover_data=['year'],
+           size_max=45, log_x=True)
+```
+
+There is one glaring problem with out plot,
+the multiple years for the same country makes it look rather crowded.
+To explore trends over time for a single numerical variable,
+we cold use a line plot with years along the x-axis.
+To explore trends over time for a two numerical variables,
+we can animate the plot!
+
+```{python}
+px.scatter(gm, 'gdpPercap', 'lifeExp', color='continent', size='pop',
+           hover_name='country', hover_data=['year'], animation_frame='year',
+           size_max=45, log_x=True)
+```
+
+Yes, this is super cool!
+
+An issue is that the plot has been autoscaled to fit the first frame,
+but the dots go out of focus as it moved.
+Explicitly setting the axes ranges fixes this issue.
+
+```{python}
+px.scatter(gm, 'gdpPercap', 'lifeExp', color='continent', size='pop',
+           hover_name='country', hover_data=['year'], animation_frame='year',
+           size_max=45, log_x=True, range_x=[100, 100_000], range_y=[25, 90])
+```
+
+# Visualizaing a categorical and a numerical variable
+
+
+For this section,
+we will work with a data set that has recorded how much tip is given at restaurants.
+There are many categorical variables in this data set,
+and in this section we will see how we can graphically explore their impact on the amount of tip given.
+
+```{python}
+tips = px.data.tips()
+tips
+```
+
+A box plot can be used to see how quartiles of the distributions compare.
+
+```{python}
+# Tukey box plots by default
+px.box(tips, 'time', 'tip')
+```
+
+Tips are on average higher during dinner,
+and seem to have a longer tail during lunch.
+A violinplot gives additional information about the shape of the distribution,
+and can visualize multimodality better than boxplots.
+
+```{python}
+px.violin(tips, 'time', 'tip')
+```
+
+To include the quartile information,
+we can add the boxes inside the violins,
+which gives us a central distribution value (the medican) that is easy to compare.
+
+```{python}
+px.violin(tips, 'time', 'tip', box=True)
+```
+
+To explore how tip differs between males and females,
+we can map that variable to coloe.
+
+```{python}
+px.violin(tips, 'time', 'tip', 'sex', box=True)
+```
+
+The trend seems to be rather similar between the two sexes.
+
+To continue mapping data dimensions to graphical components, 
+we can now make use of subplots to spread out additoinal categorical variables.
+For example,
+smokers can be compared with non-smokers in subplot columns.
+
+```{python}
+px.violin(tips, 'time', 'tip', 'sex', facet_col='smoker')
+```
+
+This concept of small multiples (also called trellis plots) allows us to effectively drill down on the data into subgroups based on the variables we choose folor facetting, colors, etc. We can go further and facet both by row and column.
+
+```{python}
+px.violin(tips, 'time', 'tip', 'sex', facet_col='smoker', facet_row='day')
+```
+
+Now that we have stratified the data to this extend,
+there are so few observation in many of the groups that a violinplot can become misleadin.
+At this point we should show the individual observations to fairly visualize our data.
+It is generally helpful to show each individual observation together with a summary plot such as a violin,
+unless there are so many observations that they saturate the plot,
+or so few that the summary plot becomes misleading.
+We can pass `points='all'` to the violinplot to show all the points next to the violin.
+
+```{python}
+px.violin(tips, 'time', 'tip', 'sex', facet_col='smoker', facet_row='day', points='all')
+```
+
+Since there are just a handful of points in many groups,
+we can get rid of the violin altogether
+and use a stripplot (categorical scatter plot) instead.
+
+```{python}
+px.strip(tips, 'time', 'tip', 'sex', facet_col='smoker', facet_row='day')
+```
+
+# Plot configuration
+
+
+Individual plot aesthetics such as marker size or marker symbol, 
+can be configured via the `update_traces` method.
+
+```{python}
+fig = px.strip(tips, 'time', 'tip', 'sex', facet_col='smoker', facet_row='day')
+fig.update_traces(marker_size=3, marker_symbol='circle-open')
+```
+
+Another more complicated example would be to change so that violins
+and points overlap and violins don't extend past the last data point.
+
+```{python}
+fig = px.violin(tips, 'smoker', 'tip', 'sex', points='all')
+fig.update_traces(pointpos=0, spanmode='hard', marker_size=4, marker_symbol ='circle-open')
+```
+
+It is hard to know all the available options,
+but the error messages are very helpful,
+so if you are not sure of what something is called,
+you can misspell on purpose and then read the error message for the legal parameters.
+
+```{python}
+# This will give a helpful error
+fig.update_traces(marker_symbol='circle-open-miss')
+```
+
+In the same manner,
+we could use `update_layout` to change layout options such as background color and gridlines.
+However,
+it is often more convenient to use one of the built-in templates
+to change multiple layout options in a single line.
+You can view what the templates styles look like on [this page][temps].
+Let's try the `'seaborn'` style,
+which is a reference to another popular Python visualization library.
+
+[temps]: https://plot.ly/python/templates/#specifying-themes-in-plotly-express)
+
+```{python}
+# Changing the default template will apply to all figures created afterwards
+px.defaults.template = 'seaborn'
+
+fig = px.histogram(tips, 'time', 'tip', 'sex',
+                   facet_col='smoker', facet_row='day', barmode='group')
+fig
+```
+
+# Color customization
+
+
+Let's change colors!
+Plotly can use all the CSS colors,
+whose names [can be found here][mpl-named].
+With these names,
+we can build our own colormap.
+
+[mpl-named]: https://stackoverflow.com/questions/22408237/named-colors-in-matplotlib/37232760#37232760
+
+```{python}
+# Again, changing the default will apply to all plots created from now on
+px.defaults.color_discrete_sequence = ['green', 'darkorange', 'rebeccapurple', 'steelblue', ]
+```
+
+Bonus: https://medium.com/@valgaze/the-hidden-purple-memorial-in-your-web-browser-7d84813bb416
+
+```{python}
+px.scatter(tips, 'total_bill', 'tip', 'day', size='size', range_y=(0, 11))
+```
+
+Instead of specifying each individual color,
+we can use one of the built in color sequences.
+Instead of using these named sequences blindly,
+we can use the Plotly help function `swatches()`
+to show us which colors are in which sequence.
+
+```{python}
+px.colors.qualitative.swatches()
+```
+
+We could set one of these as the default just as in the previous cell,
+but below we instead explore how to add it just to that one plot.
+
+```{python}
+px.scatter(tips, 'total_bill', 'tip', 'day', size='size', range_y=(0, 11),
+           color_discrete_sequence=px.colors.qualitative.Pastel)
+```
+
+The colormaps looked at above were qualitative,
+which means they are good for labelling groups.
+For numerical values,
+we instead would want to use as a sequential colormap.
+A good discussion of what makes a suitable colormap,
+can be [found here][mpl-cmap].
+As a general rule of thumb,
+they should appear to continuously increase in brightness
+and should transition between no more than 2-3 colors,
+so stay away from rainbow like colormaps.
+
+[mpl-cmap]: https://matplotlib.org/3.1.1/tutorials/colors/colormaps.html
+
+```{python}
+px.colors.sequential.swatches()
+```
+
+There are also diverging colormaps that center around a meaningful values,
+such as zero,
+and depict values below and above this center differently.
+
+```{python}
+px.scatter(tips, 'total_bill', 'tip', 'tip', size='size', range_y=(0, 11),
+           color_continuous_scale=px.colors.sequential.Inferno)
+```
+
+```{python}
+px.colors.diverging.swatches()
+```
+
+## More complex customization
+
+
+Aside from setting configuration options separately each time,
+we could create our own template and apply it to all figures by default.
+This is a bit more complex and you can ignore it for now if you are happy with the built in templates.
+A template similar to the one I am creating below will probably be availble in the next version of plotly.
+
+```{python}
+import plotly.graph_objects as go
+
+my_template = go.layout.Template(
+    layout=go.Layout(
+        hovermode='closest',
+        hoverlabel_align='left',
+        plot_bgcolor='white',
+        paper_bgcolor='white',
+        font_size=14,
+        xaxis=dict(showline=True, ticks='outside', showgrid=False,
+                   linewidth=1, zeroline=False),
+        yaxis=dict(showline=True, ticks='outside', showgrid=False,
+                   linewidth=1, zeroline=False),
+        colorway=px.colors.qualitative.D3,
+        colorscale=dict(sequential=px.colors.sequential.Viridis,
+                        diverging=px.colors.diverging.RdBu), 
+    )
+)
+
+# We would use this template just as before
+# px.defaults.template = my_template
+```
+
+# Saving figures
+
+
+Figures can be saves either as raster images such as png and jpg,
+or in vector formats such as svg and pdf.
+Both these are saved via the `.write_image()` method.
+Let's recreate one of the gapminder scatter plots,
+assign it to a variable and then save it.
+
+```{python}
+fig = px.scatter(gm, 'gdpPercap', 'lifeExp', 'lifeExp')
+fig
+```
+
+```{python}
+fig.write_image('my-file-name.png')
+```
+
+The filetype is controlled by the extension your put in the filename.
+
+```{python}
+fig.write_image('my-file-name.pdf')
+```
+
+Surprisingly,
+if you zoom in far enough on that PDF-file,
+you will notice that the dots become blurry,
+as if it was an image rather than a PDF.
+This is because the plot we created had so many dots in it,
+that plotly automatically switched to using the graphics card for displaying them to improve performance..
+This is great for viewing the plot in the notebook,
+but unfortunatey, plots rendered this way will be saved as raster images embedded in PDFs.
+To get a standard vector PDF file that is sharp no matter how close we zoom,
+we will have to override the rendering mode manually when we create the plot.
+
+```{python}
+fig = px.scatter(gm, 'gdpPercap', 'lifeExp', render_mode='svg')
+fig.write_image('my-file-name.pdf')
+```
+
+# Sharing interactive figures notebook
+
+
+Saving figures as rasters or vectors is great for adding them to a paper,
+but we lose the interactive aspects of the plots.
+If we instead save the firgures as HTML-files,
+they can be opened with a regular browser
+(Firefox, Chrome, etc),
+and the interactive features will remain the same as when we interacted with the plot in the notebook.
+
+```{python}
+fig = px.scatter(gm, 'gdpPercap', 'lifeExp')  # Without svg rendering mode this time
+fig.write_html('my-file-name.html')
+```
+
+Instead of saving figures one by one,
+we can export the entire notebook which also will incude all the text and code you have written.
+To get the plotly figures to render correctly in the exported notebook,
+we first need to run initialzie them as below.
+
+```{python}
+import plotly as pl
+pl.offline.init_notebook_mode()
+```
+
+Now we can export the notebook via the file menu:
+`File --> Export Notebook as... --> Export Notebook to HTML`.
+This is a great way to generate narative reports that are easily shareable with others,
+since all that is needed to view the files is a browser
+(yes, you can even view and interact with them on your phone!).
+
+
+# Getting you data into the correct format for making plots efficiently
+
+
+So far,
+we have worked with toy data that we could just plug and play into plotly.
+However,
+data does not always come in such neatly aranged formats.
+
+```{python}
+# .head() means that we only use the top few rows of the data,
+# this is just in order to simplify the example.
+elec = px.data.election().head()
+elec
+```
+
+Say we wanted to plot the number of votes for each candidate in each of the districts.
+We would want to have the district on the x-axis and then color by then candidate.
+However, since the candidates have one column each in the data frame,
+this will not be possible.
+Instead, we first need to reshape the data frame,
+so that there is one column that says "candidate"
+and once that says "votes".
+We want to keep the "district" column as is,
+but can through the others away for this exercise.
+
+The data shape I just described is often called "tidy" data,
+since it always has one observation per row,
+one variable per column,
+and one value per cell.
+You could rearrange your data into the tidy format using a spreadsheet program,
+but this is tedious and error prone.
+The pandas `melt` method can be used to effectively create tidy data.
+
+```{python}
+elect_tidy = elec.melt(id_vars='district', value_vars=['Coderre', 'Bergeron', 'Joly'],
+                       var_name='candidate', value_name='votes')
+elect_tidy
+```
+
+This looks easier to plot!
+
+```{python}
+px.bar(elect_tidy, 'district', 'votes', 'candidate', barmode='group')
+```
