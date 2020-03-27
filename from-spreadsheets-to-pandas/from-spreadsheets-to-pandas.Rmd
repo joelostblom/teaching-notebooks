@@ -1,0 +1,475 @@
+---
+jupyter:
+  jupytext:
+    formats: ipynb,Rmd
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.3.4
+  kernelspec:
+    display_name: Python [default]
+    language: python
+    name: python3
+---
+
+**From spreadsheets to pandas**
+
+```{python}
+Graphical abstract
+```
+
+<!-- #region -->
+**ToC**
+
+- [Preamble](#preamble)
+    - [Motivation](#motivation)
+    - [Conceptual understanding](#conceptual-understanding)
+    
+    
+- [Programming basics](#programming-basics)
+    - [Variable assignment](#variable-assignment)
+    - [Assigning multiple values to variables](#assigning-multiple-values-to-variables)
+        - [Lists](#lists)
+        - [Dictionaries](#dictionaries)
+        - [Comparisons](#comparisons)
+        
+        
+- [Using functions](#using-functions)
+    - [How to get help](#how-to-get-help)
+    - [Packages](#packages)
+    - [Data analysis with pandas](#data-analysis-with-pandas)
+    - [Subsetting data](#subsetting-data)
+    
+    
+- [Data visualization](#data-visualization)
+    - [Plotting with pandas](#plotting-with-pandas)
+    - [Plotting with seaborn](#plotting-with-seaborn)
+    
+    
+- [Resources to learn more](#resources-to-learn-more)
+    
+    
+# Preamble <a class="anchor" id="preamble"></a>
+
+This is a brief tutorial for anyone who is interested in how Python can facilitate their data analyses. The tutorial is aimed at people who currently use a spreadsheet program as their primary data analyses tool, and that have no previous programming experience. If you want to code along, a simple way to install Python [is to follow these instructions](https://github.com/UofTCoders/studyGroup/blob/gh-pages/lessons/r-python-conda-setup.md), but I encourage you to just read through this tutorial on a conceptual level at first.
+
+
+## Motivation <a class="anchor" id="motivation"></a>
+
+Spreadsheet software is great for viewing and entering small datasets and creating simple visualizations fast. However, it can be tricky to create publication-ready figures, automate reproducible analysis workflows, perform advanced calculations, and clean datasets robustly. Even when using a spreadsheet program to record data, it is often beneficial to pick up some basic programming skills to facilitate the analyses of that data.
+
+
+## Conceptual understanding <a class="anchor" id="conceptual-understanding"></a>
+
+Spreadsheet programs, such as MS Excel and Libre/OpenOffice, have their functionality sectioned into menus. In programming languages, all the functionality is accessed by typing the name of functions directly instead of finding the functions in the menu hierarchy. Initially this might seem intimidating and non-intuitive for people who are used to the menu-driven approach.
+
+However, think of it as learning a new natural language. Initially, you will slowly string together sentences by looking up individual words in the dictionary. As you improve, you will only reference the dictionary occasionally since you already know most of the words. Practicing the language whenever you can, and receiving immediate feedback, is often the fastest way to learn. Sitting at home trying to learn every word in the dictionary before engaging in conversation, is destined to kill the joy of learning any language, natural or formal.
+
+In my experience, learning programming is similar to learning a foreign language, and you will often learn the most from just trying to do something and receiving feedback from the computer! When there is something you can't wrap you head around, or if you are actively trying to find a new way of expressing a thought, then look it up, just as you would with a natural language.
+
+
+# Programming basics <a class="anchor" id="programming-basics"></a>
+
+Just like in spreadsheet software, the basic installation of Python includes fundamental math operations, e.g. adding numbers together:
+<!-- #endregion -->
+
+```{python}
+4 + 4
+```
+
+## Variable assignment <a class="anchor" id="variable-assignment"></a>
+
+It is possible to assign values to variables:
+
+```{python}
+a = 5
+a * 2
+```
+
+```{python}
+my_variable_name = 4
+a - my_variable_name
+```
+
+Variables can also hold more data types than just numbers, for example a sequence of characters surrounded by single or double quotation marks (called a *string*). In Python, it is intuitive to append string by adding them together:
+
+```{python}
+b = 'Hello'
+c = 'universe'
+b + c
+```
+
+A space can be added to separate the words:
+
+```{python}
+b + ' ' + c
+```
+
+## Assigning multiple values to variables <a class="anchor" id="assigning-multiple-values-to-variables"></a>
+
+### Lists <a class="anchor" id="lists"></a>
+
+Variables can also store more than one value, for example in a list of values:
+
+```{python}
+list_of_things = [1, 55, 'Hi']
+list_of_things
+```
+
+I can index the list to access a specific item. Note that numbering in Python starts at 0, so the third item `'Hi'`, has index 2.
+
+```{python}
+list_of_things[2]
+```
+
+### Dictionaries <a class="anchor" id="dictionaries"></a>
+
+In a dictionary, *values* are paired with names, called *keys*. These are not stored in any specific order, and are therefore accessed by the key name rather than a number.
+
+```{python}
+fruit_colors = {'tangerine':'organge', 'banana':'yellow', 'apple':['green', 'red']}
+fruit_colors['banana']
+```
+
+```{python}
+fruit_colors['apple']
+```
+
+## Comparisons <a class="anchor" id="comparisons"></a>
+
+Python can compare values and assess whether the expression is true or false. 
+
+```{python}
+1 == 1
+```
+
+```{python}
+1 == 0
+```
+
+```{python}
+1 > 0
+```
+
+```{python}
+'hey' == 'Hey'
+```
+
+```{python}
+'hey' == 'hey'
+```
+
+```{python}
+a >= 2 * 2
+```
+
+When we start working with spreadsheet-like data, we will see that these comparisons are really useful to extract subsets of data, for example observations from a certain time period.
+
+<!-- #region -->
+# Using functions <a class="anchor" id="using-functions"></a>
+
+To access additional functionality in a spreadsheet program, you need to click the menu and select the tool you want to use. All charts are in one menu, text layout tools in another, data analyses tools in a third, and so on. Programming languages such as Python have so many tools and functions so that they would not fit in a menu. Instead of clicking `File -> Open` and chose the file, you would type something similar to `file.open('<filename>')` in a programming language. Don't worry if you forget the exact expression, it is often enough to just type the few first letters and then hit <kbd>Tab</kbd>, to show the available options, more on that later.
+
+
+## Packages <a class="anchor" id="packages"></a>
+
+Since there are so many esoteric tools and functions available in Python, it is unnecessary to include all of them with the basics that are loaded by default when you start the programming language (it would be as if your new phone came with every single app preinstalled). Instead, more advanced functionality is grouped into separate packages, which can be accessed by typing `import <package_name>` in Python. You can think of this as that you are telling the program which menu items you want to use (similar to how Excel hides the `Developer menu` by default since most people rarely use it and you need activate it in the settings if you want to access its functionality). Some packages needs to be downloaded before they can be used, just like downloading an addon to a browser or mobile phone.
+
+Just like in spreadsheet software menus, there are lots of different tools within each Python package. For example, if I want to use numerical Python functions, I can import the **num**erical **py**thon module, `numpy`. I can then access any function by writing `numpy.<function_name>`.
+<!-- #endregion -->
+
+```{python}
+import numpy
+
+numpy.mean([1, 2, 3, 4, 5])
+```
+
+## How to get help <a class="anchor" id="how-to-get-help"></a>
+
+Once you start out using Python, you don't know what functions are availble within each package. Luckily, in the Jupyter Notebook, you can type `numpy.`<kbd>Tab</kbd> (that is numpy + period + tab-key) and a small menu will pop up that shows you all the available functions in that module. This is analogous to clicking a 'numpy-menu' and then going through the list of functions. As I mentioned earlier, there are plenty of available functions and it can be helpful to filter the menu by typing the initial letters of the function name.
+
+To write this tutorial, I am using a software called Jupyter Notebook, and I took a screenshot of how the tab-completion appears in the notebook. Below I use the `Image` function from the `IPython.display` package to display this screenshot.
+
+```{python}
+from IPython.display import Image
+Image('./tab-completion.png')
+```
+
+To get more info on the function you want to use, you can type out the full name and then press <kbd>Shift + Tab</kbd> once to bring up a help dialogue and again to expand that dialogue. Below I am displaying a screenshot for how this looks in the `numpy.mean` function. We can see that to use this function, we need to supply it with the argument `a`, which should be 'array-like'. An array is essentially just a sequence of numbers. In our previous example, we numbers enclosed in brackets `[]`, which in Python means that these numbers are in a list, which is a sequence of number just like an array.
+
+We could also have defined `a` as a tuple: `(1, 2, 3, 4, 5)`, or the specific numpy array format: `numpy.array([1, 2, 3, 4, 5])`. For now, it is not important to know all the differences between these formats, and I am mainly including them so you get a better understanding of what it means for something to be 'array-like'.
+
+```{python}
+Image('./shift-tab-help.png')
+```
+
+If you need a more extensive help dialog, you can click  <kbd>Shift + Tab</kbd> four times or just type `?numpy.mean`.
+
+When you start getting familiar with typing function names, you will notice that this is often faster than looking for functions in menus. It is similar to getting fluent in a language. I know what English words I want to type right now, and it is much easier for me to type them out, than to select each one from a menu. However, sometimes I forget and it is useful to get some hints as described above.
+
+
+It is common to give packages nicknames, so that it is faster to type. This is not necessary, but can save some work in long files and make code less verbose so that it is easier to read:
+
+```{python}
+import numpy as np
+
+np.std([1, 2, 3, 4, 5])
+```
+
+# Data analysis with pandas <a class="anchor" id="data-analysis-with-pandas"></a>
+
+The Python package that is most commonly used to work with spreadsheet-like data is called `pandas`, the name is derived from "panel data", an econometrics term for multidimensional structured data sets. Data are easily loaded into pandas from `.csv` or other spreadsheet formats. The format pandas uses to store this data is called a dataframe.
+
+I do not have any good data set lying around, so I will load a public dataset from the web (you can view the data by pasting the url into your browser). I store my dataframe in a variable called `iris`, that I can use to access the data from now on.
+
+```{python}
+import pandas as pd
+pd.options.display.max_rows = 10 # Shortens the output from cells
+
+iris = pd.read_csv('https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv')
+```
+
+To have a quick peak at the data, I can type `iris.head(<number_of_rows>)`. Notice that I do not have to use the `pd.`-syntax for this. `iris` is now a pandas dataframe, and all pandas dataframes have a number of built-in functions (called methods) that can be appended directly to the dataframe instead of by calling `pandas` separately.
+
+```{python}
+iris.head() # The default is to show 5 rows
+```
+
+As you can see, the dataframe row numbering starts at 0, which might be confusing at first, but a standard in many programming languages and you get used to it quickly. I can easily find out how many rows and columns my data set has:
+
+```{python}
+iris.shape
+```
+
+And the name of those five columns:
+
+```{python}
+iris.columns
+```
+
+To select a column we can *index* the dataframe with the column name.
+
+```{python}
+iris['sepal_length']
+```
+
+The output is here rendered slightly differently from before, because when we are looking only at one column, it is no longer a data frame, but a *series*. The differences are not important for this lecture, so this is all you need to know about that for now.
+
+We could now create a new column if we wanted:
+
+```{python}
+iris['sepal_length_x2'] = iris['sepal_length'] * 2
+iris['sepal_length_x2']
+```
+
+And delete that column again:
+
+```{python}
+iris = iris.drop('sepal_length_x2', axis=1)
+```
+
+There are some built-in methods that make it convenient to calculate common operation on dataframe columns.
+
+```{python}
+iris['sepal_length'].mean()
+```
+
+```{python}
+iris['sepal_length'].median()
+```
+
+It is also possible to use these methods on all columns at the same time without having to type the same thing over and over again.
+
+```{python}
+iris.mean()
+```
+
+Similarly, you can get a statistical summary of the data frame:
+
+```{python}
+iris.describe()
+```
+
+## Subsetting data <a class="anchor" id="subsetting-data"></a>
+
+
+A common task is to subset the data into only those observations that match a criteria. For example, we might be interest in only studying one specific species. First let's find out how many different species there are in our dataset:
+
+```{python}
+iris['species'].unique()
+```
+
+Let's arbitrarily choose *setosa* as the one to study! To select only observations from this species in the original dataframe, we index the dataframe with a comparison:
+
+```{python}
+iris['species'] == 'setosa'
+```
+
+```{python}
+iris[iris['species'] == 'setosa']
+```
+
+Now we can easily perform computation on this subset of the data:
+
+```{python}
+iris[iris['species'] == 'setosa'].mean()
+```
+
+```{python}
+# The below calculates the mean for each row, but that is not very valuable on this data set
+# iris[iris['species'] == 'setosa'].mean(axis=1)
+```
+
+We could also compare all groups within the data against each other, by using the split-apply-combine workflow. This splits data into groups, applies an operation on each group, and then combines the results into a table for display.
+
+In pandas, we split into groups with the `group_by` command and then we apply an operation to the grouped data frame, e.g. `.mean()`.
+
+```{python}
+iris.groupby('species').mean()
+```
+
+We can also easily count the number of observations in each group:
+
+```{python}
+iris.groupby('species').size()
+```
+
+## Data visualization <a class="anchor" id="data-visualization"></a>
+
+We can see that there are clear differences between species, but they might be even clearer if we display them graphically in a chart.
+
+### Plotting with pandas <a class="anchor" id="plotting-with-pandas"></a>
+
+
+Pandas interfaces with one of Python's most powerful data visualization libraries, `matplotlib`, to enable simple visualizations at minimal effort.
+
+```{python}
+# Prevent plots from popping up in a new window
+# %matplotlib inline
+
+species_comparison = iris.groupby('species').mean() # Assign to a variable
+species_comparison.plot(kind='bar')
+```
+
+Depending on what you are interesting in showing, it could be useful to have the species as the different colors and the columns along the x-axis. We can easily achieve this by transposing (`.T`) our data frame.
+
+```{python}
+species_comparison.T.plot(kind='bar')
+```
+
+### Plotting with seaborn <a class="anchor" id="plotting-with-seaborn"></a>
+
+Another plotting library is `seaborn`, which also builds upon `matplotlib`, and extends it by adding new styles, additional plot types and some commonly performed statistical measures.
+
+```{python}
+import seaborn as sns
+
+sns.swarmplot('species', 'sepal_length', data = iris)
+```
+
+That looks a bit small, so let's change the style we are using for plotting.
+
+```{python}
+sns.set(style='ticks', context='talk', rc={'figure.figsize':(8, 5)}) # This applies to all subseque
+
+sns.swarmplot('species', 'sepal_length', data=iris)
+sns.despine() # Remove the right and top axes lines
+```
+
+We can use the same syntax to create many of the common plots in `seaborn`.
+
+```{python}
+sns.barplot('species', 'sepal_length', data=iris)
+sns.despine() # I might set this in sns.set() to not have to type it all the time...
+```
+
+Bar charts are a common, but not very useful way of presenting data aggregations (e.g. the mean). A better way is to use the points as we did above, or a plot that capture the distribution of the data, such as a boxplot, or a violin plot:
+
+```{python}
+sns.violinplot('species', 'sepal_length', data = iris)
+sns.despine()
+```
+
+We can also combine two plots, by simply adding the two line after each other. There is also a more advanced figure interface available in `matplotlib` to explicitly indicate which figure and axes you want the plot to appear in, but this is outside the scope of this tutorial (more info [here](https://matplotlib.org/users/recipes.html#easily-creating-subplots) and [here](https://stackoverflow.com/questions/23969619/plotting-with-seaborn-using-the-matplotlib-object-oriented-interface)).
+
+```{python}
+sns.violinplot('species', 'sepal_length', data=iris, inner=None)
+sns.swarmplot('species', 'sepal_length', data=iris, color='black', size=4)
+sns.despine()
+```
+
+Instead of plotting one categorical variable vs a numerical variable, we can also plot two numerical values against each other to explore potential correlations between these two variables:
+
+```{python}
+sns.lmplot('sepal_width', 'sepal_length', data=iris, size=6)
+```
+
+There is a regression line plotted by default to indicate the trend in the data. Let's turn that off for now and look at only the data points.
+
+```{python}
+sns.lmplot('sepal_width', 'sepal_length', data=iris, fit_reg=False, size=6)
+```
+
+There appears to be some structure in this data. At least two clusters of points seem to be present. Let's color according to species and see if that explains what we see.
+
+```{python}
+sns.lmplot('sepal_width', 'sepal_length', data=iris, hue='species', fit_reg=False, size=6)
+```
+
+Now we can add back the regression line, but this time one for each group.
+
+```{python}
+sns.lmplot('sepal_width', 'sepal_length', data=iris, hue='species', fit_reg=True, size=6)
+```
+
+Instead of creating a plot for each variable against each other, we can easily create a grid of subplots for all variables with a single command:
+
+```{python}
+sns.pairplot(iris, hue="species", size=3.5)
+```
+
+### More complex visualizations <a class="anchor" id="more-complex-visualizations"></a>
+
+Many visualizations are easier to make if we first need to reshape our data frame into the [tidy or long data format](http://vita.had.co.nz/papers/tidy-data.pdf), which is the format `seaborn` prefers. This is sometimes referred to as changing the data from wide to long format, and moves some of the information from columns to rows:
+
+```{python}
+Image('./molten-data.png') # Image from http://vita.had.co.nz/papers/tidy-data.pdf
+```
+
+We can use pandas built-in `melt`-function to transform the data into the long format. The new columns will be given the names `variable` and `value` (see the help of `melt` if you would like to change these names).
+
+```{python}
+iris_melt = pd.melt(iris, id_vars='species')
+iris_melt
+```
+
+We do not need to call `groupby` or `mean` on the long `iris`-dataframe when plotting with `seaborn`. Instead we control these options from `seaborn` with the plot type we chose (barplot = mean automatically) and the `hue`-parameter, which is analogous to `groupby`.
+
+```{python}
+sns.set(context='poster', style='white', rc={'figure.figsize':(10, 6)})
+
+sns.swarmplot(x='variable', y='value', hue='species', data=iris_melt, dodge=True, palette='Set2', size=4)
+sns.despine() # removes the right and top black border
+```
+
+```{python}
+sns.set(context='poster', style='darkgrid', rc={'figure.figsize':(12, 6)})
+
+sns.boxplot(y='variable', x='value', hue='species', data=iris_melt, color='c', )
+sns.stripplot(y='variable', x='value', hue='species', data=iris_melt, size=2.5, palette=['k']*3, jitter=True, dodge=True)
+sns.despine(trim=True)
+```
+
+It is also possible to get too fancy and accidentally hide important messages in the data. However, the fact that you now have access to several ways to plot your data forces you to consider what is actually important and how you can best communicate that message, rather than always making the same plot without considering its strengths and weaknesses.
+
+
+# Resources to learn more <a class="anchor" id="resources-to-learn-more"></a>
+
+The documentation for these packages are great resources to learn more.
+
+- [Introduction to `pandas`](http://pandas.pydata.org/pandas-docs/stable/10min.html)
+- [Lessons for new `pandas` users](http://pandas.pydata.org/pandas-docs/stable/tutorials.html#lessons-for-new-pandas-users)
+- [The `seaborn` gallery](http://seaborn.pydata.org/examples/index.html)
+- [The `seaborn` tutorials](http://seaborn.pydata.org/tutorial.html)
+- [The `matplotlib` gallery](http://matplotlib.org/gallery.html) is another great resource. We did not practice using `matplotlib` explicitly in this notebook, but the plotting techniques from `pandas` and `seaborn` are layers on top of the `matplotlib` library, so we have been using it indirectly.
