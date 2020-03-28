@@ -22,7 +22,10 @@ warnings.filterwarnings('ignore')
 
 # A few EDA pointers
 
-Some pointers on useful pandas and seaborn functions to conduct EDA on a new dataset. This is of course not the only way of doing EDA, so help yourself to what you find useful and leave the rest.
+Some pointers on useful pandas and seaborn functions to conduct EDA on a new dataset.
+This is of course not the only way of doing EDA, so help yourself to what you find useful and leave the rest.
+
+# Textual and single variable EDA
 
 ```{python}
 import matplotlib.pyplot as plt
@@ -68,9 +71,20 @@ titanic.hist(figsize=(10,6), grid=False, bins=20)
 plt.tight_layout()
 ```
 
-Although some of these numerical variables are actually categorical, I would leave them in as numbers initially, just to eyeball if there are any obvious relationships to follow up on later.
+Although some of these numerical variables are actually categorical,
+I would leave them in as numbers initially,
+just to eyeball if there are any obvious relationships to follow up on later.
 
-`sns.pairplot()` shows the pair-wise variable relationships in addition to the single variable distributions. I tend to favor doing this directly instead of `hist()`, but both have their use cases. The pairplot grid can take quite some time to create for big data sets, so it can be a good idea to use `sample()` to only plot a subset of the data (but be sure to run it a few times to sample different subsets).
+## Exploring relationships between continuous variables
+
+`sns.pairplot()` shows the pair-wise variable relationships
+in addition to the single variable distributions.
+I tend to favor doing this directly instead of `hist()`,
+but both have their use cases.
+The pairplot grid can take quite some time to create for big data sets,
+so it can be a good idea to use `sample()`
+to only plot a subset of the data
+(but be sure to run it a few times to sample different subsets).
 
 ```{python}
 sns.pairplot(titanic)
@@ -100,11 +114,23 @@ numeric_cols = titanic.select_dtypes('number').columns
 sns.pairplot(titanic, hue='survived', vars=numeric_cols, plot_kws={'s':6, 'edgecolor':'none'})
 ```
 
-Since the scatters are still saturated, I would probably want to investigate these two variables with separate 2D histograms or similar instead of different colors in the scatter plot.
+Since the scatters are still saturated,
+I would probably want to investigate these two variables with separate 2D histograms
+or similar instead of different colors in the scatter plot.
 
-*What I have done up until this point are what I tend to do most of the time. The below is more situational for me, so there might be better ways of going about it (such as rectangular area plots), but this approach is quick without any additional imports.*
+*What I have done up until this point are what I tend to do most of the time.
+The below is more situational for me,
+so there might be better ways of going about it (such as rectangular area plots),
+but this approach is quick without any additional imports.*
 
-To quickly gauge relationships between categorical and continuous variables, I would loop over the columns and subset the data. You could do some of this in a Facetgrid, but the melting steps are not easier than the loops in my opinion, and Facetgrids are really meant to display multiple subsets of the data by distributing variable values across columns and rows in the plot grid but keeping the x and y axes the same throughout. 
+## Exploring relationships between categorical and continuous variables
+
+To quickly gauge relationships between categorical and continuous variables,
+I would loop over the columns and subset the data. You could do some of this in a Facetgrid,
+but the melting steps are not easier than the loops in my opinion,
+and Facetgrids are really meant to display multiple subsets of the data
+by distributing variable values across columns and rows
+in the plot grid but keeping the x and y axes the same throughout. 
 
 ```{python}
 cat_cols = titanic.select_dtypes('category').columns.to_list()
@@ -117,7 +143,8 @@ for numeric_col in numeric_cols.to_list():
         # I might add some sort of dotplot here, e.g. sns.stripplot or the fliers only from a boxplot
 ```
 
-`sns.countplot()` can be used to show counts of categorical variables as barplots without the need for manually plotting `value_counts()`.
+`sns.countplot()` can be used to show counts of categorical variables as barplots
+without the need for manually plotting `value_counts()`.
 
 ```{python}
 fig, axes = plt.subplots(1, num_cols, figsize=(num_cols * 3, 3), constrained_layout=True)
@@ -125,7 +152,11 @@ for col, ax in zip(cat_cols, axes.flatten()):
     sns.countplot(x=col, data=titanic, ax=ax)#color='steelblue')
 ```
 
-To understand relationships between the categorical variables, I would loop over the categorical columns and subset the data to count occurrences in the subsets. Again, you could do some of this in a Facetgrid, but it is a bit buggy for categorical counting since it is not its intended function.
+To understand relationships between the categorical variables,
+I would loop over the categorical columns and subset the data to count occurrences in the subsets.
+Again,
+you could do some of this in a Facetgrid,
+but it is a bit buggy for categorical counting since it is not its intended function.
 
 ```{python}
 for hue_col in cat_cols:
@@ -140,8 +171,16 @@ for hue_col in cat_cols:
             ax.set_ylabel('')
 ```
 
-The above could be made into one big subplot grid also, but it would involve a bit more verbose and EDA is ideally done without too much thinking about graphics layouts.
+The above could be made into one big subplot grid also,
+but it would involve a bit more verbose and EDA is ideally done without too much thinking about graphics layouts.
+
+---
 
 
-After this initial broad EDA, I would start more targeted EDA by using `sns.relplot` to explore relationships between two continuous variables and `sns.catplot` to explore relationships between a continuous and a categorical variable. Both of these plotting functions allow the use of small multiples (facets) to break the data into categorical subsets. The [seaborn tutorials](https://seaborn.pydata.org/tutorial.html) is a good place to learn more about this 
- I also created [this tutorial](https://nbviewer.jupyter.org/github/UofTCoders/2018-09-10-utoronto/blob/gh-pages/code/3-data-wrangling-and-viz.ipynb#Exploring-relationships-between-two-quantitative-variables) as part of UofTCoders.
+After this initial broad EDA,
+I would start more targeted EDA by using `sns.relplot` to explore relationships between two continuous variables
+and `sns.catplot` to explore relationships between a continuous and a categorical variable.
+Both of these plotting functions allow the use of small multiples (facets)
+to break the data into categorical subsets.
+The [seaborn tutorials](https://seaborn.pydata.org/tutorial.html) is a good place to learn more about this.
+I also created [this tutorial](https://nbviewer.jupyter.org/github/UofTCoders/2018-09-10-utoronto/blob/gh-pages/code/3-data-wrangling-and-viz.ipynb#Exploring-relationships-between-two-quantitative-variables) as part of UofTCoders.
