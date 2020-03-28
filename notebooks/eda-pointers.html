@@ -13118,8 +13118,9 @@ $( document ).ready(function(){
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="A-few-EDA-pointers">A few EDA pointers<a class="anchor-link" href="#A-few-EDA-pointers">&#182;</a></h1><p>Some pointers on useful pandas and seaborn functions to conduct EDA on a new dataset. This is of course not the only way of doing EDA, so help yourself to what you find useful and leave the rest.</p>
-
+<h1 id="A-few-EDA-pointers">A few EDA pointers<a class="anchor-link" href="#A-few-EDA-pointers">&#182;</a></h1><p>Some pointers on useful pandas and seaborn functions to conduct EDA on a new dataset.
+This is of course not the only way of doing EDA, so help yourself to what you find useful and leave the rest.</p>
+<h1 id="Textual-and-single-variable-EDA">Textual and single variable EDA<a class="anchor-link" href="#Textual-and-single-variable-EDA">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -13600,8 +13601,17 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Although some of these numerical variables are actually categorical, I would leave them in as numbers initially, just to eyeball if there are any obvious relationships to follow up on later.</p>
-<p><code>sns.pairplot()</code> shows the pair-wise variable relationships in addition to the single variable distributions. I tend to favor doing this directly instead of <code>hist()</code>, but both have their use cases. The pairplot grid can take quite some time to create for big data sets, so it can be a good idea to use <code>sample()</code> to only plot a subset of the data (but be sure to run it a few times to sample different subsets).</p>
+<p>Although some of these numerical variables are actually categorical,
+I would leave them in as numbers initially,
+just to eyeball if there are any obvious relationships to follow up on later.</p>
+<h2 id="Exploring-relationships-between-continuous-variables">Exploring relationships between continuous variables<a class="anchor-link" href="#Exploring-relationships-between-continuous-variables">&#182;</a></h2><p><code>sns.pairplot()</code> shows the pair-wise variable relationships
+in addition to the single variable distributions.
+I tend to favor doing this directly instead of <code>hist()</code>,
+but both have their use cases.
+The pairplot grid can take quite some time to create for big data sets,
+so it can be a good idea to use <code>sample()</code>
+to only plot a subset of the data
+(but be sure to run it a few times to sample different subsets).</p>
 
 </div>
 </div>
@@ -13795,9 +13805,19 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Since the scatters are still saturated, I would probably want to investigate these two variables with separate 2D histograms or similar instead of different colors in the scatter plot.</p>
-<p><em>What I have done up until this point are what I tend to do most of the time. The below is more situational for me, so there might be better ways of going about it (such as rectangular area plots), but this approach is quick without any additional imports.</em></p>
-<p>To quickly gauge relationships between categorical and continuous variables, I would loop over the columns and subset the data. You could do some of this in a Facetgrid, but the melting steps are not easier than the loops in my opinion, and Facetgrids are really meant to display multiple subsets of the data by distributing variable values across columns and rows in the plot grid but keeping the x and y axes the same throughout.</p>
+<p>Since the scatters are still saturated,
+I would probably want to investigate these two variables with separate 2D histograms
+or similar instead of different colors in the scatter plot.</p>
+<p><em>What I have done up until this point are what I tend to do most of the time.
+The below is more situational for me,
+so there might be better ways of going about it (such as rectangular area plots),
+but this approach is quick without any additional imports.</em></p>
+<h2 id="Exploring-relationships-between-categorical-and-continuous-variables">Exploring relationships between categorical and continuous variables<a class="anchor-link" href="#Exploring-relationships-between-categorical-and-continuous-variables">&#182;</a></h2><p>To quickly gauge relationships between categorical and continuous variables,
+I would loop over the columns and subset the data. You could do some of this in a Facetgrid,
+but the melting steps are not easier than the loops in my opinion,
+and Facetgrids are really meant to display multiple subsets of the data
+by distributing variable values across columns and rows
+in the plot grid but keeping the x and y axes the same throughout.</p>
 
 </div>
 </div>
@@ -13862,7 +13882,8 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><code>sns.countplot()</code> can be used to show counts of categorical variables as barplots without the need for manually plotting <code>value_counts()</code>.</p>
+<p><code>sns.countplot()</code> can be used to show counts of categorical variables as barplots
+without the need for manually plotting <code>value_counts()</code>.</p>
 
 </div>
 </div>
@@ -13907,7 +13928,11 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>To understand relationships between the categorical variables, I would loop over the categorical columns and subset the data to count occurrences in the subsets. Again, you could do some of this in a Facetgrid, but it is a bit buggy for categorical counting since it is not its intended function.</p>
+<p>To understand relationships between the categorical variables,
+I would loop over the categorical columns and subset the data to count occurrences in the subsets.
+Again,
+you could do some of this in a Facetgrid,
+but it is a bit buggy for categorical counting since it is not its intended function.</p>
 
 </div>
 </div>
@@ -14034,7 +14059,9 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The above could be made into one big subplot grid also, but it would involve a bit more verbose and EDA is ideally done without too much thinking about graphics layouts.</p>
+<p>The above could be made into one big subplot grid also,
+but it would involve a bit more verbose and EDA is ideally done without too much thinking about graphics layouts.</p>
+<hr>
 
 </div>
 </div>
@@ -14042,8 +14069,13 @@ dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>After this initial broad EDA, I would start more targeted EDA by using <code>sns.relplot</code> to explore relationships between two continuous variables and <code>sns.catplot</code> to explore relationships between a continuous and a categorical variable. Both of these plotting functions allow the use of small multiples (facets) to break the data into categorical subsets. The <a href="https://seaborn.pydata.org/tutorial.html">seaborn tutorials</a> is a good place to learn more about this 
- I also created <a href="https://nbviewer.jupyter.org/github/UofTCoders/2018-09-10-utoronto/blob/gh-pages/code/3-data-wrangling-and-viz.ipynb#Exploring-relationships-between-two-quantitative-variables">this tutorial</a> as part of UofTCoders.</p>
+<p>After this initial broad EDA,
+I would start more targeted EDA by using <code>sns.relplot</code> to explore relationships between two continuous variables
+and <code>sns.catplot</code> to explore relationships between a continuous and a categorical variable.
+Both of these plotting functions allow the use of small multiples (facets)
+to break the data into categorical subsets.
+The <a href="https://seaborn.pydata.org/tutorial.html">seaborn tutorials</a> is a good place to learn more about this.
+I also created <a href="https://nbviewer.jupyter.org/github/UofTCoders/2018-09-10-utoronto/blob/gh-pages/code/3-data-wrangling-and-viz.ipynb#Exploring-relationships-between-two-quantitative-variables">this tutorial</a> as part of UofTCoders.</p>
 
 </div>
 </div>
