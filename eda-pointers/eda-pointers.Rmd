@@ -25,7 +25,7 @@ warnings.filterwarnings('ignore')
 Some pointers on useful pandas and seaborn functions to conduct EDA on a new dataset.
 This is of course not the only way of doing EDA, so help yourself to what you find useful and leave the rest.
 
-# Textual and single variable EDA
+## Textual and single variable EDA
 
 ```{python}
 import matplotlib.pyplot as plt
