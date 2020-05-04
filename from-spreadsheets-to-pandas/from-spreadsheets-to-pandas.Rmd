@@ -335,6 +335,10 @@ We can also easily count the number of observations in each group:
 iris.groupby('species').size()
 ```
 
+:honeybee: 
+[ ] \(Optional) You showed us "split-apply" but "-combine" just sort of happens as a results of apply. Maybe you could emphasize the third part of the workflow by changing the table parameters for combine?
+
+
 ## Data visualization <a class="anchor" id="data-visualization"></a>
 
 We can see that there are clear differences between species, but they might be even clearer if we display them graphically in a chart.
