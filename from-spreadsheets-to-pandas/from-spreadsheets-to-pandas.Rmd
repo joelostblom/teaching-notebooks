@@ -15,7 +15,7 @@ jupyter:
 
 **From spreadsheets to pandas**
 
-```{python}
+```{pytho}
 Graphical abstract
 ```
 
