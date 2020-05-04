@@ -266,7 +266,7 @@ iris['sepal_length_x2']
 And delete that column again:
 
 ```{python}
-iris = iris.drop('sepal_length_x2', axis=1)
+iris = iris.drop(columns='sepal_length_x2')
 ```
 
 There are some built-in methods that make it convenient to calculate common operation on dataframe columns.
