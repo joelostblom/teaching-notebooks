@@ -174,7 +174,7 @@ To access additional functionality in a spreadsheet program, you need to click t
 
 ## Packages <a class="anchor" id="packages"></a>
 
-Since there are so many esoteric tools and functions available in Python, it is unnecessary to include all of them with the basics that are loaded by default when you start the programming language (it would be as if your new phone came with every single app preinstalled). Instead, more advanced functionality is grouped into separate packages, which can be accessed by typing `import <package_name>` in Python. You can think of this as that you are telling the program which menu items you want to use (similar to how Excel hides the `Developer menu` by default since most people rarely use it and you need activate it in the settings if you want to access its functionality). Some packages needs to be downloaded before they can be used, just like downloading an addon to a browser or mobile phone.
+Since there are so many esoteric tools and functions available in Python, it is unnecessary to include all of them with the basics that are loaded by default when you start the programming language (it would be as if your new phone came with every single app preinstalled). Instead, more advanced functionality is grouped into separate packages, which can be accessed by typing `import <package_name>` in Python. You can think of this as that you are telling the program which menu items you want to use (similar to how Excel hides the `Developer menu` by default since most people rarely use it and you need activate it in the settings if you want to access its functionality). Some packages need to be downloaded before they can be used, just like downloading an addon to a browser or mobile phone.
 
 Just like in spreadsheet software menus, there are lots of different tools within each Python package. For example, if I want to use numerical Python functions, I can import the **num**erical **py**thon module, `numpy`. I can then access any function by writing `numpy.<function_name>`.
 <!-- #endregion -->
@@ -187,7 +187,7 @@ numpy.mean([1, 2, 3, 4, 5])
 
 ## How to get help <a class="anchor" id="how-to-get-help"></a>
 
-Once you start out using Python, you don't know what functions are availble within each package. Luckily, in the Jupyter Notebook, you can type `numpy.`<kbd>Tab</kbd> (that is numpy + period + tab-key) and a small menu will pop up that shows you all the available functions in that module. This is analogous to clicking a 'numpy-menu' and then going through the list of functions. As I mentioned earlier, there are plenty of available functions and it can be helpful to filter the menu by typing the initial letters of the function name.
+Once you start out using Python, you don't know what functions are available within each package. Luckily, in the Jupyter Notebook, you can type `numpy.`<kbd>Tab</kbd> (that is numpy + period + tab-key) and a small menu will pop up that shows you all the available functions in that module. This is analogous to clicking a 'numpy-menu' and then going through the list of functions. As I mentioned earlier, there are plenty of available functions and it can be helpful to filter the menu by typing the initial letters of the function name.
 
 To write this tutorial, I am using a software called Jupyter Notebook, and I took a screenshot of how the tab-completion appears in the notebook. Below I use the `Image` function from the `IPython.display` package to display this screenshot.
 
@@ -266,7 +266,7 @@ iris['sepal_length_x2']
 And delete that column again:
 
 ```{python}
-iris = iris.drop('sepal_length_x2', axis=1)
+iris = iris.drop(columns='sepal_length_x2')
 ```
 
 There are some built-in methods that make it convenient to calculate common operation on dataframe columns.
@@ -334,6 +334,10 @@ We can also easily count the number of observations in each group:
 ```{python}
 iris.groupby('species').size()
 ```
+
+:honeybee: 
+[ ] \(Optional) You showed us "split-apply" but "-combine" just sort of happens as a results of apply. Maybe you could emphasize the third part of the workflow by changing the table parameters for combine?
+
 
 ## Data visualization <a class="anchor" id="data-visualization"></a>
 
